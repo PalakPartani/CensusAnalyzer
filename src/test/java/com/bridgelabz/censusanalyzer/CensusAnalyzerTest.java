@@ -64,13 +64,26 @@ public class CensusAnalyzerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void givenIndianStateCodeCsvFile_whenIncorrect_shouldReturnException() {
         try {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(CensusAnalyserException.class);
-            censusAnalyzer.loadCensusData(WRONG_CSV_FILE_PATH);
+            censusAnalyzer.loadStateCodeData(WRONG_CSV_FILE_PATH);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
+        }
+    }
+
+    @Test
+    public void givenIndianStateCodeCsvFile_WhenTypeIncorrect_shouldReturnException() {
+        try {
+            CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
+            ExpectedException expectedException = ExpectedException.none();
+            expectedException.expect(ClassCastException.class);
+            censusAnalyzer.loadStateCodeData(WRONG_CSV_FILE_TYPE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
