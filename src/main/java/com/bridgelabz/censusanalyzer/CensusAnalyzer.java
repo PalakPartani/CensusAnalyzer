@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class CensusAnalyzer {
-    public int loadCensusData(String csvFilePath)  {
+    public int loadCensusData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            CsvToBeanBuilder<IndiaCensusCSV>  csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+            CsvToBeanBuilder<IndiaCensusCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
             csvToBeanBuilder.withType(IndiaCensusCSV.class);
             csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
             CsvToBean<IndiaCensusCSV> csvToBean = csvToBeanBuilder.build();
@@ -21,12 +21,11 @@ public class CensusAnalyzer {
             int numberOfEntries = 0;
             while (censusCsvIterator.hasNext()) {
                 numberOfEntries++;
-                IndiaCensusCSV  censusData = censusCsvIterator.next();
+                IndiaCensusCSV censusData = censusCsvIterator.next();
             }
             return numberOfEntries;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
         }
-        return 0;
     }
 }
