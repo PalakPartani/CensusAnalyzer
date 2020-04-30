@@ -15,9 +15,9 @@ public class CensusAnalyzer {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
             //java 8 feature
-            Iterator<IndiaCensusCSV> censusCSVIterator = getCSVFileIterator(reader, IndiaCensusCSV.class);
-            Iterable<IndiaCensusCSV> csvIterable = () -> censusCSVIterator;
-            //  return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+          //  Iterator<IndiaCensusCSV> censusCSVIterator = getCSVFileIterator(reader, IndiaCensusCSV.class);
+            Iterator<IndiaStateCode> censusCSVIterator =new OpenCSVBuilder().getCSVFileIterator(reader, IndiaStateCode.class);
+
             return getCount(censusCSVIterator);
 
         } catch (IOException e) {
@@ -37,11 +37,10 @@ public class CensusAnalyzer {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
             //java 8 feature
-            Iterator<IndiaCensusCSV> censusCSVIterator = getCSVFileIterator(reader, IndiaStateCode.class);
-            Iterable<IndiaCensusCSV> csvIterable = () -> censusCSVIterator;
+            //Iterator<IndiaCensusCSV> censusCSVIterator = getCSVFileIterator(reader, IndiaStateCode.class);
+            Iterator<IndiaStateCode> censusCSVIterator =new OpenCSVBuilder().getCSVFileIterator(reader, IndiaStateCode.class);
             return getCount(censusCSVIterator);
 
-            //  return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
         } catch (RuntimeException e) {

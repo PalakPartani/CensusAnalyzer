@@ -7,7 +7,7 @@ public class CensusAnalyserException extends RuntimeException {
     }
 
     enum ExceptionType {
-        CSV_FILE_PROBLEM, CSV_WRONG_HEADER;
+        CSV_FILE_PROBLEM, CSV_WRONG_HEADER, UNABLE_TO_PARSE;
     }
 
     ExceptionType type;
