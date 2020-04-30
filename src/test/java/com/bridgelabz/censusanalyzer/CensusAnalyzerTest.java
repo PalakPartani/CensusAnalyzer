@@ -88,6 +88,7 @@ public class CensusAnalyzerTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
     }
+
     @Test
     public void givenIndianStateCodeCsvFile_WhenHeaderIncorrect_shouldReturnException() {
         try {
