@@ -7,20 +7,15 @@ import org.junit.rules.ExpectedException;
 public class CensusAnalyzerTest {
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
 
-    private static final String WRONG_CENSUS_CSV_FILE_PATH = "./src/test/resource/IndiaStateCensusData.csv";
-    private static final String WRONG_STATE_CSV_FILE_PATH = "./src/test/resource/IndiaStateCensusData.csv";
+    private static final String WRONG_CSV_FILE_PATH = "./src/test/resource/IndiaStateCensusDataa.csv";
 
-    private static final String WRONG_CENSUS_CSV_FILE_TYPE = "./src/test/resources/IndiaStateCensusData.json";
-    private static final String WRONG_CODECSV_FILE_TYPE = "./src/test/resources/IndiaStateCensusData.json";
+    private static final String WRONG_CSV_FILE_TYPE = "./src/test/resources/IndiaStateCensusData.json";
 
-    private static final String WRONG_STATE_HEADER_FILE = "./src/test/resources/IndiaStateCode.csv";
-    private static final String WRONG_CENSUS_HEADER_FILE = "./src/test/resources/IndiaStateCode.csv";
+    private static final String WRONG_HEADER_FILE = "./src/test/resources/IndiaStateCode.csv";
 
     private static final String INDIA_STATE_CODE = "./src/test/resources/IndiaStateCode.csv";
 
-
     private static final String WRONG_DELIMITER = "./src/test/resources/WrongDelimiter.csv";
-
 
     @Test
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
@@ -35,7 +30,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(CensusAnalyserException.class);
-            censusAnalyzer.loadCensusData(WRONG_CENSUS_CSV_FILE_PATH);
+            censusAnalyzer.loadCensusData(WRONG_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
@@ -47,7 +42,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(ClassCastException.class);
-            censusAnalyzer.loadCensusData(WRONG_CENSUS_CSV_FILE_TYPE);
+            censusAnalyzer.loadCensusData(WRONG_CSV_FILE_TYPE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
@@ -71,7 +66,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(ClassCastException.class);
-            censusAnalyzer.loadCensusData(WRONG_CENSUS_HEADER_FILE);
+            censusAnalyzer.loadCensusData(WRONG_HEADER_FILE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER, e.type);
         }
@@ -95,7 +90,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(CensusAnalyserException.class);
-            censusAnalyzer.loadStateCodeData(WRONG_STATE_CSV_FILE_PATH);
+            censusAnalyzer.loadStateCodeData(WRONG_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
@@ -107,7 +102,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(ClassCastException.class);
-            censusAnalyzer.loadStateCodeData(WRONG_CODECSV_FILE_TYPE);
+            censusAnalyzer.loadStateCodeData(WRONG_CSV_FILE_TYPE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM, e.type);
         }
@@ -119,7 +114,7 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             ExpectedException expectedException = ExpectedException.none();
             expectedException.expect(ClassCastException.class);
-            censusAnalyzer.loadStateCodeData(WRONG_STATE_HEADER_FILE);
+            censusAnalyzer.loadStateCodeData(WRONG_HEADER_FILE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER, e.type);
         }
