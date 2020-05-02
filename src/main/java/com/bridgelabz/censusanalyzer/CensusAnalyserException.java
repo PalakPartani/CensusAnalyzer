@@ -6,7 +6,12 @@ public class CensusAnalyserException extends RuntimeException {
         this.type = type;
     }
 
-    enum ExceptionType {
+    public CensusAnalyserException(String message, String type) {
+        super(message);
+        this.type = ExceptionType.valueOf(type);
+    }
+
+    public enum ExceptionType {
         CSV_FILE_PROBLEM, CSV_WRONG_HEADER, UNABLE_TO_PARSE;
     }
 

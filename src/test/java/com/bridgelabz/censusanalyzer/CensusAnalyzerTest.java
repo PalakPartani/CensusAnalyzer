@@ -79,7 +79,7 @@ public class CensusAnalyzerTest {
         try {
             int numberOfRecord = censusAnalyzer.loadStateCodeData(INDIA_STATE_CODE);
             Assert.assertEquals(37, numberOfRecord);
-        } catch (CensusAnalyserException e) {
+        } catch (CSVBuilderException e) {
             e.printStackTrace();
         }
     }
@@ -116,7 +116,7 @@ public class CensusAnalyzerTest {
             expectedException.expect(ClassCastException.class);
             censusAnalyzer.loadStateCodeData(WRONG_HEADER_FILE);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER, e.type);
+            Assert.assertEquals(CSVBuilderException.ExceptionType.CSV_WRONG_HEADER, e.type);
         }
     }
 
