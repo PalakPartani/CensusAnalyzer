@@ -1,12 +1,12 @@
 package com.bridgelabz.censusanalyzer;
 
-public class IndiaCensusDTO {
+public class IndiaCensusDAO {
     public String state;
     public int areaInSqKm;
     public int densityPerSqKm;
     public int population;
 
-    public IndiaCensusDTO(IndiaCensusCSV next) {
+    public IndiaCensusDAO(IndiaCensusCSV next) {
         state=next.state;
         areaInSqKm=next.areaInSqKm;
         densityPerSqKm=next.densityPerSqKm;
