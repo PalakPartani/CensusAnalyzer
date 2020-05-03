@@ -57,11 +57,6 @@ public class CensusAnalyzer {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER);
         }
     }
-/*
-    private <E> int getCount(Iterator<E> iterator) {
-        Iterable<E> csvIterable = () -> iterator;
-        return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-    }*/
 
     public String getStateWiseSortedCensusData() {
         if (collect == null || collect.size() == 0) {
