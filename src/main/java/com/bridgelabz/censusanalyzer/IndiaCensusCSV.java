@@ -7,11 +7,11 @@ public class IndiaCensusCSV {
     @CsvBindByName(column = "State", required = true)
     public String state;
     @CsvBindByName(column = "Population", required = true)
-    private int population;
+    public int population;
     @CsvBindByName(column = "AreaInSqKm", required = true)
-    private int areaInSqKm;
+    public int areaInSqKm;
     @CsvBindByName(column = "DensityPerSqKm")
-    private int densityPerSqKm;
+    public int densityPerSqKm;
 
     @Override
     public String toString() {
@@ -22,4 +22,5 @@ public class IndiaCensusCSV {
                 ", densityPerSqKm=" + densityPerSqKm +
                 '}';
     }
+
 }

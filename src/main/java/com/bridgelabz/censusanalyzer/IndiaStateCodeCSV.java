@@ -2,15 +2,15 @@ package com.bridgelabz.censusanalyzer;
 
 import com.opencsv.bean.CsvBindByName;
 
-public class IndiaStateCode {
+public class IndiaStateCodeCSV {
     @CsvBindByName(column = "SrNo", required = true)
-    private int srNo;
+    public int srNo;
     @CsvBindByName(column = "StateName", required = true)
-    private String state;
+    public String state;
     @CsvBindByName(column = "TIN", required = true)
-    private int tin;
+    public int tin;
     @CsvBindByName(column = "StateCode")
-    private String stateCode;
+    public String stateCode;
 
     @Override
     public String toString() {

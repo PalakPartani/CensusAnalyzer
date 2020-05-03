@@ -9,7 +9,6 @@ import java.util.List;
 
 public class OpenCSVBuilder<E> implements ICSVBuilder {
 
-
     @Override
     public List<E> getCSVFileList(Reader reader, Class csvClass) {
         return this.getCsvToBean(reader, csvClass).parse();
@@ -31,5 +30,4 @@ public class OpenCSVBuilder<E> implements ICSVBuilder {
             throw new CSVBuilderException(e.getMessage(), CSVBuilderException.ExceptionType.UNABLE_TO_PARSE);
         }
     }
-
 }
