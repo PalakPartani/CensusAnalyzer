@@ -101,4 +101,14 @@ public class CensusAnalyzer {
         String sortedStateCensus = new Gson().toJson(collect);
         return sortedStateCensus;
     }
+
+    public String getSortedCensusDataPopulationAreaWise(String csvFilePath) {
+        if (collect == null || collect.size() == 0) {
+            throw new CensusAnalyserException("No Census data available", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.areaInSqKm);
+        this.sort(censusComparator);
+        String sortedStateCensus = new Gson().toJson(collect);
+        return sortedStateCensus;
+    }
 }
