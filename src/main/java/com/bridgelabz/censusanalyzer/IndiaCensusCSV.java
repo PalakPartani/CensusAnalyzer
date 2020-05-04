@@ -22,5 +22,4 @@ public class IndiaCensusCSV {
                 ", densityPerSqKm=" + densityPerSqKm +
                 '}';
     }
-
 }

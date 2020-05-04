@@ -1,5 +1,6 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.service;
 
+import com.bridgelabz.censusanalyzer.*;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -12,19 +13,13 @@ import java.util.stream.StreamSupport;
 
 public class CensusAnalyzer {
     Map<String, IndiaCensusDAO> censusCSVMap;
-    List<IndiaCensusDAO> collect = null;
-    Map<SortField, Comparator<IndiaCensusDAO>> sortMap = null;
-
+    List<IndiaCensusDAO> list;
+    // Map<SortField, Comparator<IndiaCensusDAO>> sortMap;
 
     public CensusAnalyzer() {
-        this.collect = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.censusCSVMap = new HashMap<>();
-        this.sortMap = new HashMap<>();
-        this.sortMap.put(SortField.STATE, Comparator.comparing(census -> census.state));
-        this.sortMap.put(SortField.POPULATION, Comparator.comparing(census -> census.population));
-        this.sortMap.put(SortField.POPULATIONSDENSITY, Comparator.comparing(census -> census.densityPerSqKm));
-        this.sortMap.put(SortField.TOTALAREA, Comparator.comparing(census -> census.areaInSqKm));
-        //  this.sortMap.put(SortField.STATECODE, Comparator.comparing(census -> census.state));
+
     }
 
     public int loadCensusData(String csvFilePath) {
@@ -33,11 +28,18 @@ public class CensusAnalyzer {
             //java 8 feature
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<IndiaCensusCSV> censusCSVIterator = csvBuilder.getCSVFileIterator(reader, IndiaCensusCSV.class);
+
+            //  Iterable<IndiaStateCodeCSV> csvIterable = () -> censusCSVIterator;
+           /* StreamSupport.stream(csvIterable.spliterator(), false)
+                    .filter(csvState -> censusCSVMap.get(csvState.state) != null)
+                    .collect(censusCSVMap.put(censusCSVIterator.next(),new IndiaCensusDAO(new IndiaCensusCSV())));
+           */
             while (censusCSVIterator.hasNext()) {
                 IndiaCensusCSV indiaCensusCSV = censusCSVIterator.next();
                 censusCSVMap.put(indiaCensusCSV.state, new IndiaCensusDAO(indiaCensusCSV));
             }
-            collect = censusCSVMap.values().stream().collect(Collectors.toList());
+
+            list = censusCSVMap.values().stream().collect(Collectors.toList());
             return censusCSVMap.size();
 
         } catch (IOException e) {
@@ -66,25 +68,25 @@ public class CensusAnalyzer {
         }
     }
 
-    public String getStateWiseSortedCensusData(SortField sortField) {
-        if (collect == null || collect.size() == 0) {
+    public String getSortedCensusData(SortField sortField) {
+        if (list == null || list.size() == 0) {
             throw new CensusAnalyserException("No Census data available", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
-        collect = censusCSVMap.values().stream().collect(Collectors.toList());
-        this.sort(this.sortMap.get(sortField).reversed());
-        String sortedStateCensusJson = new Gson().toJson(collect);
+        list = censusCSVMap.values().stream().collect(Collectors.toList());
+        this.sort(new loadSortField().sortMap.get(sortField).reversed());
+
+        String sortedStateCensusJson = new Gson().toJson(list);
         return sortedStateCensusJson;
     }
 
     private void sort(Comparator<IndiaCensusDAO> censusComparator) {
-        for (int i = 0; i < collect.size() - 1; i++) {
-            for (int j = 0; j < collect.size() - 1 - i; j++) {
-                IndiaCensusDAO census1 = collect.get(j);
-                IndiaCensusDAO census2 = collect.get(j + 1);
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = 0; j < list.size() - 1 - i; j++) {
+                IndiaCensusDAO census1 = list.get(j);
+                IndiaCensusDAO census2 = list.get(j + 1);
                 if (censusComparator.compare(census1, census2) > 0) {
-                    collect.set(j, census2);
-                    collect.set(j + 1, census1);
-
+                    list.set(j, census2);
+                    list.set(j + 1, census1);
                 }
             }
         }
