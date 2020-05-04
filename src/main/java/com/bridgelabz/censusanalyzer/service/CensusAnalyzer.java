@@ -91,4 +91,26 @@ public class CensusAnalyzer {
             }
         }
     }
+
+    public int loadUSCensusData(String csvFilePath) {
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+            //java 8 feature
+            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+            Iterator<UsCensusCSV> censusCSVIterator = csvBuilder.getCSVFileIterator(reader, UsCensusCSV.class);
+
+            while (censusCSVIterator.hasNext()) {
+                UsCensusCSV usCensusCSV = censusCSVIterator.next();
+                censusCSVMap.put(usCensusCSV.state, new IndiaCensusDAO(usCensusCSV));
+            }
+
+            list = censusCSVMap.values().stream().collect(Collectors.toList());
+            return censusCSVMap.size();
+
+        } catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
+        } catch (RuntimeException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER);
+        }
+    }
 }
