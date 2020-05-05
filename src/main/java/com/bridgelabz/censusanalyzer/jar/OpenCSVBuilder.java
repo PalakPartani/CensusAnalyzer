@@ -1,4 +1,4 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.jar;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;

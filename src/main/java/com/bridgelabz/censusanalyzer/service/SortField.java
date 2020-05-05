@@ -1,4 +1,4 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.service;
 
 public enum SortField {
     STATE,POPULATION,POPULATIONSDENSITY,TOTALAREA;

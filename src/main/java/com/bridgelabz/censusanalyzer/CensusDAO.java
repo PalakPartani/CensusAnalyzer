@@ -1,6 +1,9 @@
 package com.bridgelabz.censusanalyzer;
 
-public class IndiaCensusDAO {
+import com.bridgelabz.censusanalyzer.csvfiles.IndiaCensusCSV;
+import com.bridgelabz.censusanalyzer.csvfiles.UsCensusCSV;
+
+public class CensusDAO {
     public double totalArea;
     public String state;
     public int areaInSqKm;
@@ -9,14 +12,14 @@ public class IndiaCensusDAO {
     public String stateCode;
     public double populationDensity;
 
-    public IndiaCensusDAO(IndiaCensusCSV next) {
+    public CensusDAO(IndiaCensusCSV next) {
         state = next.state;
         areaInSqKm = next.areaInSqKm;
         densityPerSqKm = next.densityPerSqKm;
         population = next.population;
     }
 
-    public IndiaCensusDAO(UsCensusCSV UsCensusCSV) {
+    public CensusDAO(UsCensusCSV UsCensusCSV) {
 
         state = UsCensusCSV.state;
         stateCode = UsCensusCSV.stateId;

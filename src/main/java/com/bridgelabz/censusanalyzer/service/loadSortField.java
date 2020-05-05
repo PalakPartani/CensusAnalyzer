@@ -1,14 +1,13 @@
 package com.bridgelabz.censusanalyzer.service;
 
-import com.bridgelabz.censusanalyzer.IndiaCensusDAO;
-import com.bridgelabz.censusanalyzer.SortField;
+import com.bridgelabz.censusanalyzer.CensusDAO;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class loadSortField {
-    Map<SortField, Comparator<IndiaCensusDAO>> sortMap;
+    Map<SortField, Comparator<CensusDAO>> sortMap;
+   // SortedMap<SortField,Comparator<CensusDAO>> sortMap=new TreeMap<>();
+
 
     public loadSortField() {
         this.sortMap = new HashMap<>();

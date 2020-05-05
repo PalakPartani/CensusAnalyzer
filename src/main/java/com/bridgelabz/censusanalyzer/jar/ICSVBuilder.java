@@ -1,4 +1,4 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.jar;
 
 import java.io.Reader;
 import java.util.Iterator;

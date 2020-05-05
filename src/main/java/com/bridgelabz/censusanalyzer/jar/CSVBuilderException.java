@@ -1,4 +1,4 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.jar;
 
 public class CSVBuilderException extends RuntimeException {
     public enum ExceptionType {

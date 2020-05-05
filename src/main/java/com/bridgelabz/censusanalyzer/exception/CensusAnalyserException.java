@@ -1,4 +1,4 @@
-package com.bridgelabz.censusanalyzer;
+package com.bridgelabz.censusanalyzer.exception;
 
 public class CensusAnalyserException extends RuntimeException {
     public CensusAnalyserException(String message, ExceptionType type) {
@@ -9,5 +9,5 @@ public class CensusAnalyserException extends RuntimeException {
         CSV_FILE_PROBLEM, CSV_WRONG_HEADER, UNABLE_TO_PARSE, NO_CENSUS_DATA;
     }
 
-    ExceptionType type;
+   public ExceptionType type;
 }
