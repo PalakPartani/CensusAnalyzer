@@ -275,4 +275,21 @@ public class CensusAnalyzerTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenUSAndIndiaCensusData_WhenSortedOnPopulationDensity_ShouldReturnCorrectSortedResult() {
+        CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
+        try {
+
+            censusAnalyzer.loadCensusData(CensusAnalyzer.Country.US, US_CENSUS);
+            String sortedCensusData = censusAnalyzer.getSortedCensusData(SortField.POPULATIONSDENSITY);
+            UsCensusCSV[] usCensusCSV = new Gson().fromJson(sortedCensusData, UsCensusCSV[].class);
+            censusAnalyzer.loadCensusData(CensusAnalyzer.Country.INDIA, INDIA_CENSUS_CSV_FILE_PATH, INDIA_STATE_CODE);
+            String sortedIndiaCensusData = censusAnalyzer.getSortedCensusData(SortField.POPULATIONSDENSITY);
+            IndiaCensusCSV[] indiaCensusCSV = new Gson().fromJson(sortedIndiaCensusData, IndiaCensusCSV[].class);
+            Assert.assertEquals(true, usCensusCSV[0].population < indiaCensusCSV[0].population);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
 }
