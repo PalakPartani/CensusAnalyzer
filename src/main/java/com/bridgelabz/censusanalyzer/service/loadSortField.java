@@ -6,8 +6,6 @@ import java.util.*;
 
 public class loadSortField {
     Map<SortField, Comparator<CensusDAO>> sortMap;
-   // SortedMap<SortField,Comparator<CensusDAO>> sortMap=new TreeMap<>();
-
 
     public loadSortField() {
         this.sortMap = new HashMap<>();

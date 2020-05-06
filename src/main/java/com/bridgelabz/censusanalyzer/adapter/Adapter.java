@@ -27,11 +27,11 @@ public abstract class Adapter {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<E> censusCsvIterator = icsvBuilder.getCSVFileIterator(reader, censusCsvClass);
             Iterable<E> csvIterable = () -> censusCsvIterator;
-            if (censusCsvClass.getName().equals("com.bridgelabz.censusanalyzer.model.IndiaCensusCSV")) {
+            if (censusCsvClass.getName().equals("IndiaCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
                         .map(IndiaCensusCSV.class::cast)
                         .forEach(censusCsv -> censusMap.put(censusCsv.state, new CensusDAO(censusCsv)));
-            } else if (censusCsvClass.getName().equals("com.bridgelabz.censusanalyzer.model.UsCensusCSV")) {
+            } else if (censusCsvClass.getName().equals("UsCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
                         .map(UsCensusCSV.class::cast)
                         .forEach(censusCsv -> censusMap.put(censusCsv.state, new CensusDAO(censusCsv)));

@@ -5,7 +5,6 @@ import com.bridgelabz.censusanalyzer.adapter.AdapterFactory;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +14,9 @@ public class CensusAnalyzer {
     public enum Country {INDIA, US}
 
     Map<String, CensusDAO> censusCSVMap;
-    List<CensusDAO> list;
+    List<CensusDAO> list=null;
 
-    public CensusAnalyzer() {
-        list=new ArrayList<>();
-    }
-
-    public int loadIndiaCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
+    public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
         censusCSVMap = AdapterFactory.getCensusData(country, csvFilePath);
         return censusCSVMap.size();
     }
@@ -29,6 +24,17 @@ public class CensusAnalyzer {
     public String getSortedCensusData(SortField sortField) {
         if (list == null || list.size() == 0) {
             throw new CensusAnalyserException("No Census data available", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        list = censusCSVMap.values().stream().collect(Collectors.toList());
+        this.sort(new loadSortField().sortMap.get(sortField).reversed());
+
+        // new loadSortField().sortMap.headMap(sortField);
+        String sortedStateCensusJson = new Gson().toJson(list);
+        return sortedStateCensusJson;
+    }
+    public String getUSSortedCensusData(SortField sortField) throws CensusAnalyserException {
+        if(censusCSVMap.size()==0 || censusCSVMap==null) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         list = censusCSVMap.values().stream().collect(Collectors.toList());
         this.sort(new loadSortField().sortMap.get(sortField).reversed());
@@ -51,12 +57,4 @@ public class CensusAnalyzer {
         }
     }
 
-    public String getUSSortedCensusData(String csvFilePath) throws CensusAnalyserException {
-        if(list.size()==0 || list==null)
-            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
-        Comparator<CensusDAO> censusDaoComparator = Comparator.comparing(census -> census.state);
-        this.sort(censusDaoComparator);
-        String sortedCensusJson = new Gson().toJson(list);
-        return sortedCensusJson;
-    }
 }
