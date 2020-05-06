@@ -5,6 +5,7 @@ import com.bridgelabz.censusanalyzer.adapter.AdapterFactory;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,10 @@ public class CensusAnalyzer {
 
     Map<String, CensusDAO> censusCSVMap;
     List<CensusDAO> list;
+
+    public CensusAnalyzer() {
+        list=new ArrayList<>();
+    }
 
     public int loadIndiaCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
         censusCSVMap = AdapterFactory.getCensusData(country, csvFilePath);
@@ -44,5 +49,14 @@ public class CensusAnalyzer {
                 }
             }
         }
+    }
+
+    public String getUSSortedCensusData(String csvFilePath) throws CensusAnalyserException {
+        if(list.size()==0 || list==null)
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        Comparator<CensusDAO> censusDaoComparator = Comparator.comparing(census -> census.state);
+        this.sort(censusDaoComparator);
+        String sortedCensusJson = new Gson().toJson(list);
+        return sortedCensusJson;
     }
 }

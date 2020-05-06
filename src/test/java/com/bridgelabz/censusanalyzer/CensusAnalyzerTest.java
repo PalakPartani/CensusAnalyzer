@@ -2,6 +2,7 @@ package com.bridgelabz.censusanalyzer;
 
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
+import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
 import com.bridgelabz.censusanalyzer.service.CensusAnalyzer;
 import com.bridgelabz.censusanalyzer.service.SortField;
 import com.google.gson.Gson;
@@ -217,6 +218,33 @@ public class CensusAnalyzerTest {
             CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
             int numberOfRecord = censusAnalyzer.loadIndiaCensusData(CensusAnalyzer.Country.US, US_CENSUS);
             Assert.assertEquals(51, numberOfRecord);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenUsCensusData_WhenSorted_ShouldReturnCorrectResult() {
+        try {
+            CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
+            censusAnalyzer.loadIndiaCensusData(CensusAnalyzer.Country.US,US_CENSUS);
+            String sortedCensusData = censusAnalyzer.getUSSortedCensusData(US_CENSUS);
+            UsCensusCSV[] censusCsv = new Gson().fromJson(sortedCensusData, UsCensusCSV[].class);
+            Assert.assertEquals("Alabama", censusCsv[0].state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenUsCensusData_WhenSorted_ShouldReturnLastCorrectResult() {
+
+        try {
+            CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
+            censusAnalyzer.loadIndiaCensusData(CensusAnalyzer.Country.US,US_CENSUS);
+            String sortedCensusData = censusAnalyzer.getUSSortedCensusData(US_CENSUS);
+            UsCensusCSV[] censusCsv = new Gson().fromJson(sortedCensusData, UsCensusCSV[].class);
+            Assert.assertEquals("Wyoming", censusCsv[50].state);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
