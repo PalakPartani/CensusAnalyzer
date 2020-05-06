@@ -1,26 +1,23 @@
 package com.bridgelabz.censusanalyzer.service;
 
-import com.bridgelabz.censusanalyzer.*;
-import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
-import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
+import com.bridgelabz.censusanalyzer.CensusDAO;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CensusAnalyzer {
+    public enum Country {INDIA, US}
     Map<String, CensusDAO> censusCSVMap;
     List<CensusDAO> list;
 
-    public int loadIndiaCensusData(String... csvFilePath) throws CensusAnalyserException {
-        censusCSVMap = new CensusLoader().loadCensusData(IndiaCensusCSV.class, csvFilePath);
+    public int loadIndiaCensusData(Country country,String... csvFilePath) throws CensusAnalyserException {
+        censusCSVMap = new CensusLoader().loadCensusData(country, csvFilePath);
         list = censusCSVMap.values().stream().collect(Collectors.toList());
         return censusCSVMap.size();
-    }
-
-    public int loadUSCensusData(String csvFilePath) {
-        return new CensusLoader().loadCensusData(UsCensusCSV.class, csvFilePath).size();
     }
 
     public String getSortedCensusData(SortField sortField) {

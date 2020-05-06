@@ -6,6 +6,7 @@ import com.bridgelabz.censusanalyzer.jar.CSVBuilderFactory;
 import com.bridgelabz.censusanalyzer.jar.ICSVBuilder;
 import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
 import com.bridgelabz.censusanalyzer.model.IndiaStateCodeCSV;
+import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -24,12 +25,19 @@ public class CensusLoader {
         this.censusCSVMap = new HashMap<>();
     }
 
-    public <E> Map<String, CensusDAO> loadCensusData(Class<E> censusCSVClass, String... csvFilePath) {
+    public <E> Map<String, CensusDAO> loadCensusData(CensusAnalyzer.Country country, String[] csvFilePath) {
 
+        if (country.equals(CensusAnalyzer.Country.INDIA))
+            return this.loadCensusData(IndiaCensusCSV.class, csvFilePath);
+        else if (country.equals(CensusAnalyzer.Country.US))
+            return this.loadCensusData(UsCensusCSV.class, csvFilePath);
+        throw new CensusAnalyserException("Invalid Country", CensusAnalyserException.ExceptionType.INVALID_COUNTRY);
+    }
+
+    private <E> Map<String, CensusDAO> loadCensusData(Class<E> censusCSVClass, String... csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath[0]))) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<E> censusCSVIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
-
             Iterable<E> csvIterable = () -> censusCSVIterator;
             if (censusCSVClass.getName().equals("com.bridgelabz.censusanalyzer.model.IndiaCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
@@ -51,7 +59,7 @@ public class CensusLoader {
         }
     }
 
-    private int loadStateCodeData(Map<String,CensusDAO>censusCSVMap,String csvFilePath) throws CensusAnalyserException {
+    private int loadStateCodeData(Map<String, CensusDAO> censusCSVMap, String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
             //java 8 feature
@@ -62,7 +70,6 @@ public class CensusLoader {
                     .filter(csvState -> this.censusCSVMap.get(csvState.state) != null)
                     .forEach(csvState -> this.censusCSVMap.get(csvState.state));
             return this.censusCSVMap.size();
-
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
         } catch (RuntimeException e) {
