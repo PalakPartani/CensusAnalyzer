@@ -1,7 +1,7 @@
 package com.bridgelabz.censusanalyzer;
 
-import com.bridgelabz.censusanalyzer.csvfiles.IndiaCensusCSV;
-import com.bridgelabz.censusanalyzer.csvfiles.UsCensusCSV;
+import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
+import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
 
 public class CensusDAO {
     public double totalArea;

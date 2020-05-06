@@ -1,9 +1,9 @@
 package com.bridgelabz.censusanalyzer.service;
 
 import com.bridgelabz.censusanalyzer.*;
-import com.bridgelabz.censusanalyzer.csvfiles.IndiaCensusCSV;
-import com.bridgelabz.censusanalyzer.csvfiles.IndiaStateCodeCSV;
-import com.bridgelabz.censusanalyzer.csvfiles.UsCensusCSV;
+import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
+import com.bridgelabz.censusanalyzer.model.IndiaStateCodeCSV;
+import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyzer.jar.CSVBuilderFactory;
 import com.bridgelabz.censusanalyzer.jar.ICSVBuilder;
@@ -21,43 +21,19 @@ public class CensusAnalyzer {
     Map<String, CensusDAO> censusCSVMap;
     List<CensusDAO> list;
 
-    public CensusAnalyzer() {
+/*    public CensusAnalyzer() {
         this.list = new ArrayList<>();
         this.censusCSVMap = new HashMap<>();
-    }
+    }*/
 
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
-        return this.loadCensusData(csvFilePath, IndiaCensusCSV.class);
+        censusCSVMap = new CensusLoader().loadCensusData(csvFilePath, IndiaCensusCSV.class);
+        list = censusCSVMap.values().stream().collect(Collectors.toList());
+        return censusCSVMap.size();
     }
-
-    private <E> int loadCensusData(String csvFilePath, Class<E> censusCSVClass) {
-
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<E> censusCSVIterator = csvBuilder.getCSVFileIterator(reader, censusCSVClass);
-
-            Iterable<E> csvIterable = () -> censusCSVIterator;
-            if (censusCSVClass.getName().equals("com.bridgelabz.censusanalyzer.csvfiles.IndiaCensusCSV")) {
-                StreamSupport.stream(csvIterable.spliterator(), false)
-                        .map(IndiaCensusCSV.class::cast)
-                        .forEach(censusCSV -> censusCSVMap.put(censusCSV.state, new CensusDAO(censusCSV)));
-            } else if (censusCSVClass.getName().equals("com.bridgelabz.censusanalyzer.csvfiles.UsCensusCSV")) {
-                StreamSupport.stream(csvIterable.spliterator(), false)
-                        .map(IndiaCensusCSV.class::cast)
-                        .forEach(censusCSV -> censusCSVMap.put(censusCSV.state, new CensusDAO(censusCSV)));
-            }
-            list = censusCSVMap.values().stream().collect(Collectors.toList());
-            return censusCSVMap.size();
-        } catch (IOException e) {
-            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
-        } catch (RuntimeException e) {
-            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER);
-        }
-    }
-
 
     public int loadUSCensusData(String csvFilePath) {
-        return this.loadCensusData(csvFilePath, UsCensusCSV.class);
+        return new CensusLoader().loadCensusData(csvFilePath, UsCensusCSV.class).size();
     }
 
     public int loadStateCodeData(String csvFilePath) {

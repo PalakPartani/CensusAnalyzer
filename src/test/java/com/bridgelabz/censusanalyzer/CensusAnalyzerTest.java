@@ -1,6 +1,6 @@
 package com.bridgelabz.censusanalyzer;
 
-import com.bridgelabz.censusanalyzer.csvfiles.IndiaCensusCSV;
+import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.bridgelabz.censusanalyzer.jar.CSVBuilderException;
 import com.bridgelabz.censusanalyzer.service.CensusAnalyzer;
@@ -179,7 +179,7 @@ public class CensusAnalyzerTest {
             String sortedCensusData = censusAnalyzer.getSortedCensusData(SortField.POPULATION);
             new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER, e.type);
         }
     }
 
@@ -205,7 +205,7 @@ public class CensusAnalyzerTest {
             String sortedCensusData = censusAnalyzer.getSortedCensusData(SortField.POPULATIONSDENSITY);
             new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA, e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER, e.type);
         }
     }
 
