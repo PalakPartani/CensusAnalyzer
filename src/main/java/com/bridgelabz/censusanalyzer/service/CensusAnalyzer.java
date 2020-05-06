@@ -2,57 +2,25 @@ package com.bridgelabz.censusanalyzer.service;
 
 import com.bridgelabz.censusanalyzer.*;
 import com.bridgelabz.censusanalyzer.model.IndiaCensusCSV;
-import com.bridgelabz.censusanalyzer.model.IndiaStateCodeCSV;
 import com.bridgelabz.censusanalyzer.model.UsCensusCSV;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
-import com.bridgelabz.censusanalyzer.jar.CSVBuilderFactory;
-import com.bridgelabz.censusanalyzer.jar.ICSVBuilder;
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class CensusAnalyzer {
     Map<String, CensusDAO> censusCSVMap;
     List<CensusDAO> list;
 
-/*    public CensusAnalyzer() {
-        this.list = new ArrayList<>();
-        this.censusCSVMap = new HashMap<>();
-    }*/
-
-    public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
-        censusCSVMap = new CensusLoader().loadCensusData(csvFilePath, IndiaCensusCSV.class);
+    public int loadIndiaCensusData(String... csvFilePath) throws CensusAnalyserException {
+        censusCSVMap = new CensusLoader().loadCensusData(IndiaCensusCSV.class, csvFilePath);
         list = censusCSVMap.values().stream().collect(Collectors.toList());
         return censusCSVMap.size();
     }
 
     public int loadUSCensusData(String csvFilePath) {
-        return new CensusLoader().loadCensusData(csvFilePath, UsCensusCSV.class).size();
-    }
-
-    public int loadStateCodeData(String csvFilePath) {
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            //java 8 feature
-            ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<IndiaStateCodeCSV> censusCSVIterator = csvBuilder.getCSVFileIterator(reader, IndiaStateCodeCSV.class);
-            Iterable<IndiaStateCodeCSV> csvIterable = () -> censusCSVIterator;
-            StreamSupport.stream(csvIterable.spliterator(), false)
-                    .filter(csvState -> censusCSVMap.get(csvState.state) != null)
-                    .forEach(csvState -> censusCSVMap.get(csvState.state));
-            return censusCSVMap.size();
-
-        } catch (IOException e) {
-            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_FILE_PROBLEM);
-        } catch (RuntimeException e) {
-            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CSV_WRONG_HEADER);
-        }
+        return new CensusLoader().loadCensusData(UsCensusCSV.class, csvFilePath).size();
     }
 
     public String getSortedCensusData(SortField sortField) {
