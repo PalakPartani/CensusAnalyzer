@@ -1,6 +1,7 @@
 package com.bridgelabz.censusanalyzer.service;
 
 import com.bridgelabz.censusanalyzer.CensusDAO;
+import com.bridgelabz.censusanalyzer.adapter.AdapterFactory;
 import com.bridgelabz.censusanalyzer.exception.CensusAnalyserException;
 import com.google.gson.Gson;
 
@@ -11,12 +12,12 @@ import java.util.stream.Collectors;
 
 public class CensusAnalyzer {
     public enum Country {INDIA, US}
+
     Map<String, CensusDAO> censusCSVMap;
     List<CensusDAO> list;
 
-    public int loadIndiaCensusData(Country country,String... csvFilePath) throws CensusAnalyserException {
-        censusCSVMap = new CensusLoader().loadCensusData(country, csvFilePath);
-        list = censusCSVMap.values().stream().collect(Collectors.toList());
+    public int loadIndiaCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
+        censusCSVMap = AdapterFactory.getCensusData(country, csvFilePath);
         return censusCSVMap.size();
     }
 
