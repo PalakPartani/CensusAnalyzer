@@ -18,20 +18,20 @@ import java.util.stream.StreamSupport;
 
 public abstract class Adapter {
 
-    public abstract Map<String, CensusDAO> loadCensusData(String... csvFilePath) ;
+    public abstract Map<String, CensusDAO> loadCensusData(String... csvFilePath);
 
     public <E> Map<String, CensusDAO> loadCensusData(Class<E> censusCsvClass, String csvFilePath) {
-        Map<String,CensusDAO> censusMap = new HashMap<>();
+        Map<String, CensusDAO> censusMap = new HashMap<>();
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<E> censusCsvIterator = icsvBuilder.getCSVFileIterator(reader, censusCsvClass);
             Iterable<E> csvIterable = () -> censusCsvIterator;
-            if (censusCsvClass.getName().equals("IndiaCensusCSV")) {
+            if (censusCsvClass.getName().equals("com.bridgelabz.censusanalyzer.model.IndiaCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
                         .map(IndiaCensusCSV.class::cast)
                         .forEach(censusCsv -> censusMap.put(censusCsv.state, new CensusDAO(censusCsv)));
-            } else if (censusCsvClass.getName().equals("UsCensusCSV")) {
+            } else if (censusCsvClass.getName().equals("com.bridgelabz.censusanalyzer.model.UsCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
                         .map(UsCensusCSV.class::cast)
                         .forEach(censusCsv -> censusMap.put(censusCsv.state, new CensusDAO(censusCsv)));

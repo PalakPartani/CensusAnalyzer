@@ -30,5 +30,13 @@ public class UsCensusCSV {
                 ", populationDensity=" + populationDensity +
                 '}';
     }
+
+    public UsCensusCSV(String state, double population, double populationDensity, double totalArea) {
+        this.state = state;
+        this.population = population;
+        this.populationDensity = populationDensity;
+        this.totalArea = totalArea;
+    }
+
 }
 
