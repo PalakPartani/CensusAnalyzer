@@ -19,8 +19,17 @@ import java.util.stream.StreamSupport;
 
 public class IndiaCensusAdaptor extends Adapter {
 
-    Map<String, CensusDAO> censusDAOMap = null;
-    List<CensusDAO> list = null;
+    Map<String, CensusDAO> censusDAOMap;
+    List<CensusDAO> list ;
+
+    public IndiaCensusAdaptor(Map<String, CensusDAO> censusDAOMap, List<CensusDAO> list) {
+        this.censusDAOMap = censusDAOMap;
+        this.list = list;
+    }
+
+    public IndiaCensusAdaptor() {
+
+    }
 
     @Override
     public Map<String, CensusDAO> loadCensusData(String... csvFilePath) {

@@ -13,6 +13,8 @@ public class CensusDAO {
     public double population;
     public String stateCode;
     public double populationDensity;
+    IndiaCensusCSV indiaCensusCSV = new IndiaCensusCSV(state, population, populationDensity, totalArea);
+    UsCensusCSV usCensusCSV = new UsCensusCSV(state, population, populationDensity, totalArea);
 
     public CensusDAO(IndiaCensusCSV next) {
         state = next.state;
@@ -32,10 +34,11 @@ public class CensusDAO {
     }
 
     public Object getCensusDTO(CensusAnalyzer.Country country) {
-        if (country.equals(CensusAnalyzer.Country.INDIA))
-            return new IndiaCensusCSV(state, population, populationDensity, totalArea);
-        else if (country.equals(CensusAnalyzer.Country.US))
-            return new IndiaCensusCSV(state, population, populationDensity, totalArea);
-        throw new CensusAnalyserException("No Country data available", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        return (country.equals(CensusAnalyzer.Country.INDIA) ? this.indiaCensusCSV : this.usCensusCSV);
     }
+
+   /* public Object getCensusDTO(CensusAnalyzer.Country country) {
+        return (country.equals(CensusAnalyzer.Country.INDIA) ? new IndiaCensusCSV(state, population, populationDensity, totalArea)
+                : new UsCensusCSV(state, population, populationDensity, totalArea));
+    }*/
 }

@@ -27,9 +27,13 @@ public class CensusAnalyzerTest {
 
     @Test
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
-        CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
-        int numberOfRecord = censusAnalyzer.loadCensusData(CensusAnalyzer.Country.INDIA, INDIA_CENSUS_CSV_FILE_PATH, INDIA_STATE_CODE);
-        Assert.assertEquals(29, numberOfRecord);
+        try {
+            CensusAnalyzer censusAnalyzer = new CensusAnalyzer();
+            int numberOfRecord = censusAnalyzer.loadCensusData(CensusAnalyzer.Country.INDIA, INDIA_CENSUS_CSV_FILE_PATH, INDIA_STATE_CODE);
+            Assert.assertEquals(29, numberOfRecord);
+        }catch (CensusAnalyserException e){
+
+        }
     }
 
     @Test
