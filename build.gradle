@@ -16,4 +16,6 @@ dependencies {
     compile "com.opencsv:opencsv:4.0"
     implementation fileTree(dir: 'lib', include: ['*.jar'])
     compile 'com.google.code.gson:gson:2.2.+'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+
 }

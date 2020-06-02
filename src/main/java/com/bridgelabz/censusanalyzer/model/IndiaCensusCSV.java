@@ -20,6 +20,10 @@ public class IndiaCensusCSV {
         this.areaInSqKm = totalArea;
     }
 
+    public IndiaCensusCSV() {
+
+    }
+
     @Override
     public String toString() {
         return "IndiaCensusCsv{" +
